@@ -1,6 +1,9 @@
 # Depole AI Research
 ### ChatGPT API testing
 
+### Prerequisites:
+Node.js + NPM
+
 ### Install dependencies:
 ```bash
 npm install

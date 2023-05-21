@@ -28,7 +28,7 @@ async function getReply(contextName: String, context: ChatCompletionRequestMessa
         ]
     }
 
-    let start = performance.now()
+    const start = performance.now()
     const chatGPT = await openai.createChatCompletion(request);
     console.log(`\nTime: ${performance.now() - start}ms`);
 
