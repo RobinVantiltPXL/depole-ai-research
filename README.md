@@ -1,6 +1,5 @@
 # Depole AI Research
 ### ChatGPT API testing
-<br>
 
 ### Install dependencies:
 ```bash
