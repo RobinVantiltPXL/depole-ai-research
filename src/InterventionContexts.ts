@@ -1,5 +1,5 @@
 import { ChatCompletionRequestMessage } from "openai";
-import { ChatMessageRole } from './ChatMessageRole.js';
+import { ChatMessageRole } from './ChatMessageRole';
 
 /*
 Direct

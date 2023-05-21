@@ -1,7 +1,7 @@
-import hateMessages from './HateMessages.js';
-import { ChatMessageRole } from './ChatMessageRole.js';
-import { directInterventionContext } from './InterventionContexts.js'
+import { ChatMessageRole } from './ChatMessageRole';
+import { directInterventionContext } from './InterventionContexts';
 import { Configuration, OpenAIApi, CreateChatCompletionRequest, ChatCompletionRequestMessage } from "openai";
+import prompt from "prompt-sync";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,28 +11,25 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-console.log('DIRECT intervention');
-const request: CreateChatCompletionRequest = {
-    model: 'gpt-3.5-turbo',
-    messages: null
-}
+const hateMessage = prompt({sigint: true})("Enter hate message: ");
 
-for (const hateMessage of hateMessages) {
-    request.messages = [
-        directInterventionContext,
-        {
-            role: ChatMessageRole.USER,
-            content: hateMessage
-        }
-    ]
+getReply('DIRECT', directInterventionContext)
+
+async function getReply(contextName: String, context: ChatCompletionRequestMessage) {
+    const request: CreateChatCompletionRequest = {
+        model: 'gpt-3.5-turbo',
+        messages: [
+            context,
+            {
+                role: ChatMessageRole.USER,
+                content: hateMessage
+            }
+        ]
+    }
 
     const chatGPT = await openai.createChatCompletion(request);
 
     const result = chatGPT.data.choices[0].message.content;
-
-    console.log();
-    console.log('hatemessage: ' + hateMessage);
-    console.log('|');
-    console.log('reply: ' + result);
-    console.log();
+    
+    console.log(`\n${contextName} intervention: \n${result}`);
 }
