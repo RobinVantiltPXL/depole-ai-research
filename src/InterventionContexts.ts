@@ -10,4 +10,18 @@ const directInterventionContext : ChatCompletionRequestMessage = {
     content: "Respond objectively to the next hate messages in a direct way"
 }
 
+/*
+Delay
+Ga in gesprek met de persoon die werd gediscrimineerd/gepest (bv. ondersteuning, hulp aanbieden, enz.).
+*/
+
+// todo
+
+/*
+Distract
+Breng de situatie indirect in beweging door de pester en het doelwit te onderbreken (bijv. commotie, praatje, enz.).
+*/
+
+// todo
+
 export { directInterventionContext };

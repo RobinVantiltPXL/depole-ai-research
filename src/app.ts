@@ -14,6 +14,7 @@ const openai = new OpenAIApi(configuration);
 const hateMessage = prompt({sigint: true})("Enter hate message: ");
 
 getReply('DIRECT', directInterventionContext)
+// getReply('DELAY', ...)
 
 async function getReply(contextName: String, context: ChatCompletionRequestMessage) {
     const request: CreateChatCompletionRequest = {
