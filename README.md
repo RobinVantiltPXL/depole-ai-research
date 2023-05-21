@@ -6,6 +6,11 @@
 npm install
 ```
 
+### API KEY
+create .env file with
+```js
+OPEN_AI_API_KEY=API_KEY_HERE
+```
 
 ### Run program:
 ```bash

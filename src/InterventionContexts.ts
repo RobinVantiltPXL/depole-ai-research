@@ -7,7 +7,7 @@ Als iedereen fysiek veilig is, spreek dan krachtig en duidelijk tegen de pesteri
  */
 const directInterventionContext : ChatCompletionRequestMessage = {
     role: ChatMessageRole.SYSTEM,
-    content: "Respond objectively to the next hate messages in a direct way"
+    content: "Respond objectively to the next hate messages in a direct way, and do it in the language of the received hate message"
 }
 
 /*
