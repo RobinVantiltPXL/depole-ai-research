@@ -1,5 +1,5 @@
 import { ChatMessageRole } from './ChatMessageRole';
-import { directInterventionContext } from './InterventionContexts';
+import { directInterventionContext, distractInterventionContext, counterInterventionContext } from './InterventionContexts';
 import { Configuration, OpenAIApi, CreateChatCompletionRequest, ChatCompletionRequestMessage } from "openai";
 import prompt from "prompt-sync";
 import * as dotenv from 'dotenv';
@@ -13,8 +13,9 @@ const openai = new OpenAIApi(configuration);
 
 const hateMessage = prompt({sigint: true})("Enter hate message: ");
 
-getReply('DIRECT', directInterventionContext)
-// getReply('DELAY', ...)
+getReply('DIRECT', directInterventionContext);
+getReply('DISTRACT', distractInterventionContext);
+getReply('COUNTER', counterInterventionContext);
 
 async function getReply(contextName: String, context: ChatCompletionRequestMessage) {
     const request: CreateChatCompletionRequest = {
@@ -30,9 +31,10 @@ async function getReply(contextName: String, context: ChatCompletionRequestMessa
 
     const start = performance.now()
     const chatGPT = await openai.createChatCompletion(request);
-    console.log(`\nTime: ${performance.now() - start}ms`);
+
+    console.log(`\n${contextName} intervention: \t\t${performance.now() - start}ms`);
 
     const result = chatGPT.data.choices[0].message.content;
     
-    console.log(`\n${contextName} intervention: \n${result}`);
+    console.log(result);
 }
