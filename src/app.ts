@@ -1,5 +1,5 @@
 import { ChatMessageRole } from './ChatMessageRole';
-import { directInterventionContext, distractInterventionContext, counterInterventionContext } from './InterventionContexts';
+import { universalInterventionContext, directInterventionContext, distractInterventionContext, counterInterventionContext } from './InterventionContexts';
 import { Configuration, OpenAIApi, CreateChatCompletionRequest, ChatCompletionRequestMessage } from "openai";
 import prompt from "prompt-sync";
 import * as dotenv from 'dotenv';
@@ -11,17 +11,18 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const hateMessage = prompt({sigint: true})("Enter hate message: ");
+const hateMessage: string = prompt({sigint: true})("Enter hate message: ");
 
 getReply('DIRECT', directInterventionContext);
 getReply('DISTRACT', distractInterventionContext);
 getReply('COUNTER', counterInterventionContext);
 
-async function getReply(contextName: String, context: ChatCompletionRequestMessage) {
+async function getReply(contextName: string, context: ChatCompletionRequestMessage) {
     const request: CreateChatCompletionRequest = {
         model: 'gpt-3.5-turbo',
         messages: [
-            context,
+            context, // direct/counter/distract context
+            universalInterventionContext,
             {
                 role: ChatMessageRole.USER,
                 content: hateMessage
@@ -29,12 +30,13 @@ async function getReply(contextName: String, context: ChatCompletionRequestMessa
         ]
     }
 
-    const start = performance.now()
-    const chatGPT = await openai.createChatCompletion(request);
+    const startTime = performance.now();
+    const chatCompletion = await openai.createChatCompletion(request);
+    const endTime = performance.now();
 
-    console.log(`\n${contextName} intervention: \t\t${performance.now() - start}ms`);
+    const time = Math.round(endTime - startTime);
+    console.log(`\n${contextName} intervention: \t\t${time}ms`);
 
-    const result = chatGPT.data.choices[0].message.content;
-    
+    const result = chatCompletion.data.choices[0].message.content;
     console.log(result);
 }
